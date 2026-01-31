@@ -1,0 +1,59 @@
+---
+title: "Starting My Portfolio: A Data Engineer's Pivot to Frontend"
+date: '2025-01-15'
+tags: ['next-js', 'tailwind-css', 'ai', 'antigravity', 'cursor', 'data-engineering']
+draft: false
+summary: 'How I built a modern portfolio using Next.js and Tailwind CSS, and a comparison of the AI agents that helped me get there: Antigravity vs Cursor.'
+authors: ['default']
+---
+
+## The "Backend-only" Trap
+
+As a Data Engineer, I spend most of my day thinking about DAGs, data partitions, and SQL optimization. CSS has always felt like a dark art, and React was something "other people" did. However, every professional needs a home on the web.
+
+When I decided to build this portfolio, I knew I didn't want to build it from scratch. I chose the **Tailwind Next.js Starter Blog** because it’s efficient, SEO-optimized, and lets me treat content as data (MDX).
+
+## The Step-by-Step Evolution
+
+### 1. The Foundation
+
+Instead of wrestling with Webpack or Vite configurations, I used `npx degit` to grab the starter. For a backend person, this is magic—it gives you a working environment in seconds.
+
+```bash
+npx degit timlrx/tailwind-nextjs-starter-blog my-portfolio
+cd my-portfolio
+npm install
+```
+
+### 2. Styling with Tailwind
+
+Tailwind CSS is a game-changer for backend devs. It turns design into a series of predictable utility classes. No more hopping between `index.css` and `Component.tsx` trying to remember why a margin isn't applying.
+
+### 3. Content as Code
+
+Everything in this blog is driven by MDX. My posts live in `data/blog/` as files. Contentlayer processes these at build time, giving me type-safety and automatic routing. It feels very much like a build pipeline for data.
+
+## AI Sidekicks: Antigravity vs. Cursor
+
+The real secret to moving fast was using AI. I’ve spend time with both **Cursor** and **Antigravity**, and they serve very different purposes in my workflow.
+
+### Cursor: The Ultimate IDE Extension
+
+Cursor is fantastic when I’m already in the zone. Its "Composer" and "Tab" autocomplete are best-in-class for writing specific React components.
+
+### Antigravity: The Full-Stack Agent
+
+Antigravity is built for complex, multi-step tasks. While Cursor helps me write code, Antigravity helps me manage the project. For example, when my environment broke, Antigravity investigated and fixed it for me.
+
+| Feature      | Cursor IDE                       | Antigravity Agent                                |
+| :----------- | :------------------------------- | :----------------------------------------------- |
+| **Focus**    | Code Authoring                   | Task Execution                                   |
+| **Context**  | Files & Editor                   | Git, Terminal, Build State, Files                |
+| **Autonomy** | Interactive                      | Agentic / Proactive                              |
+| **Best For** | "Writing this specific function" | "Fix my broken environment and write a new post" |
+
+## Conclusion
+
+Building a frontend doesn't have to be scary if you're a backend person. With a solid starter template and an agent like Antigravity to handle the "plumbing" of the environment, you can focus on the content and the design.
+
+Next up on my list: Integrating a live dashboard of my recent data pipelines into the homepage. Stay tuned!
