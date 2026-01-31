@@ -8,7 +8,7 @@ const siteMetadata = {
   theme: 'system', // system, dark or light
   siteUrl: 'https://jimfellows.dev',
   siteRepo: 'https://github.com/jimfellows/my-portfolio',
-  siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
+  siteLogo: `${process.env.BASE_PATH || ''}/static/images/hex_logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
   mastodon: 'https://mastodon.social/@mastodonuser',
   email: 'hi@jimfellows.dev',
@@ -17,7 +17,7 @@ const siteMetadata = {
   // twitter: 'https://twitter.com/Twitter',
   facebook: 'https://facebook.com',
   youtube: 'https://youtube.com',
-  linkedin: 'https://www.linkedin.com',
+  linkedin: 'https://www.linkedin.com/in/jfellows',
   threads: 'https://www.threads.net',
   instagram: 'https://www.instagram.com',
   medium: 'https://medium.com',

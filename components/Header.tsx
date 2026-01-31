@@ -1,6 +1,7 @@
 import siteMetadata from '@/data/siteMetadata'
 import headerNavLinks from '@/data/headerNavLinks'
-import Logo from '@/data/logo.svg'
+import Image from 'next/image'
+import monogramImg from '@/data/hex_logo.png'
 import Link from './Link'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
@@ -16,8 +17,16 @@ const Header = () => {
     <header className={headerClass}>
       <Link href="/" aria-label={siteMetadata.headerTitle}>
         <div className="flex items-center justify-between">
-          <div className="mr-3">
-            <Logo />
+          <div className="relative mr-3 h-12 w-12">
+            {' '}
+            {/* Adjust h-12 w-12 to fit your header size preference */}
+            <Image
+              src={monogramImg}
+              alt="Jim Fellows Logo"
+              fill // This makes the image fill the parent div defined above
+              className="object-contain" // Ensures the logo doesn't get stretched
+              priority // Loads the logo immediately for better LCP score
+            />
           </div>
           {typeof siteMetadata.headerTitle === 'string' ? (
             <div className="hidden h-6 text-2xl font-semibold sm:block">
