@@ -1,4 +1,16 @@
 {
+  "markdown": 1,
+  "code": 1,
+  "features": 1,
+  "project-management": 1,
+  "pmp": 1,
+  "career-growth": 1,
+  "engineering-management": 1,
+  "iot": 1,
+  "esp32": 1,
+  "vue-js": 1,
+  "couchdb": 1,
+  "project": 1,
   "next-js": 2,
   "tailwind-css": 1,
   "ai": 1,
@@ -6,8 +18,5 @@
   "cursor": 1,
   "data-engineering": 1,
   "multi-author": 1,
-  "feature": 1,
-  "markdown": 1,
-  "code": 1,
-  "features": 1
+  "feature": 1
 }

@@ -1,0 +1,60 @@
+---
+title: 'Building a DIY Sauna Monitor: IoT, CouchDB, and Vue'
+date: '2026-01-31'
+tags:
+  - iot
+  - esp32
+  - vue-js
+  - couchdb
+  - project
+draft: false
+summary: >-
+  My attempt at building a remote monitor for my woodfired sauna using an ESP32, Micropython, and a Vue.js PWA.
+authors:
+  - default
+---
+
+## The Problem: Is the Sauna Ready Yet?
+
+There's nothing quite like a woodfired sauna. But there's also nothing quite as annoying as trekking out to the backyard in freezing temperatures just to check if it's hot enough yet.
+
+I decided to solve this with engineering. My goal: send temperature and humidity data from the sauna to a dashboard I can check from my couch.
+
+## The Hardware Stack
+
+For the brains of the operation, I chose the **ESP32** (specifically the ESP-WROOM-32). It's robust, cheap, and has built-in WiFi.
+
+For the sensor, I needed something that could withstand the heat and humidity. I went with the **Taidacent SHT30**, a waterproof temperature and humidity sensor.
+
+### Tech Specs:
+
+- **Microcontroller**: ESP32 running Micropython
+- **Sensor**: SHT30 (I2C interface)
+- **Power**: USB bank (for now)
+
+Flashing the ESP32 was an adventure in itself using `esptool`, but once I got Micropython running, reading data from the sensor was straightforward via the I2C pins (Blue/SDA, Yellow/SCL).
+
+## The Software Stack
+
+I wanted a modern, reactive frontend to display the data.
+
+1.  **Backend**: I chose **CouchDB** for the database. Its HTTP API makes it easy to push data directly from the ESP32 without needing a complex middleware server.
+2.  **Frontend**: A **Vue.js** Progressive Web App (PWA). I wanted something mobile-friendly that I could install on my phone.
+
+## The Networking Challenge
+
+This is where the project hit a snag. The sauna is in the backyard, and my WiFi signal there is... optimistic at best.
+
+Getting the ESP32 to maintain a stable connection through external walls and across the yard has been the biggest hurdle. I'm currently looking into extending my mesh network or potentially switching to a LoRaWAN setup for better range.
+
+## Current Status
+
+The project is currently "in progress." The sensor works, the code is written, and the repo is up on [GitHub](https://github.com/jimfellows/sauna-monitor).
+
+The remaining tasks are:
+
+1.  Stabilizing the network connection.
+2.  Finishing the wiring diagram.
+3.  Polishing the Vue UI.
+
+Check out the code if you're interested in building your own!
