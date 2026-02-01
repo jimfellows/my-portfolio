@@ -28,6 +28,12 @@ const projectsData: Project[] = [
     imgSrc: '/static/images/projects/rockfish/tablet-cam.jpg',
     href: '/blog/rockfish-camera-system',
   },
+  {
+    title: 'Data Tender',
+    description: `Automated at-sea data submission application using Starlink and AWS S3. Built with PySide6/QML to replace manual sneakernet workflows with real-time cloud data pipelines.`,
+    imgSrc: '/static/images/projects/data-tender/main-ui.png',
+    href: '/blog/data-tender-starlink-aws',
+  },
 ]
 
 export default projectsData

@@ -1,0 +1,64 @@
+---
+title: 'The Data Tender: Bridging the Gap Between Sea and Cloud'
+date: '2026-02-01'
+tags:
+  - python
+  - pyside6
+  - aws
+  - starlink
+  - postgresql
+  - offline-first
+draft: false
+summary: >-
+  How we leveraged Starlink to modernize NOAA data pipelines, moving from thumb drives to real-time AWS S3 uploads utilizing ruggedized laptops and a custom QML application.
+authors:
+  - default
+---
+
+## The "Sneakernet" Problem
+
+For decades, getting data off a NOAA research vessel meant one thing: **Sneakernet**. Scientists would copy files to thumb drives, walk them off the ship at the end of a leg, and drive them to the science center. Data latency was measured in weeks.
+
+With the installation of **Starlink** on our fleet, we suddenly had a pipe to the internet. But we needed a secure, reliable way to move gigabytes of sensor and biological data from the ship's local network to the cloud.
+
+## Enter "The Data Tender"
+
+I developed **The Data Tender**, a desktop application designed to run on ruggedized Dell Latitude laptops on the ship's bridge.
+
+**Tech Stack:**
+
+- **Language**: Python 3.10
+- **GUI Framework**: PySide6 (Qt for Python) + QML.
+- **Hardware**: Ruggedized Windows Laptops.
+
+We chose PySide6/QML over a web stack (React/Electron) to leverage our team's existing Python expertise and ensure tight system integration for network management.
+
+### Key Features
+
+1.  **Network Integration**: The app scrapes the local ship network to find fresh survey data files.
+2.  **Starlink Connection**: It manages the connection to the Starlink WiFi, ensuring we don't accidentally try to upload terabytes over a metered cellular backup.
+    ![Network Login](/static/images/projects/data-tender/network-login.png)
+3.  **Automated Uploads**: Users can queue files for upload. The app handles compression (zipping) and resumable uploads to AWS S3.
+    ![Main UI](/static/images/projects/data-tender/main-ui.png)
+    ![Zipping Process](/static/images/projects/data-tender/zip-process.png)
+
+## The Cloud Pipeline
+
+Getting data to S3 is just the first step. We built a serverless pipeline to ingest that data into our shoreside databases.
+
+![Architecture Diagram](/static/images/projects/data-tender/architecture.png)
+
+1.  **Ingest**: Application uploads zipped data to an S3 `Raw Files Bucket`.
+2.  **Trigger**: An S3 Event Notification triggers an **AWS Lambda**.
+3.  **Process**: The Lambda unzips the payload, parses the data, and moves it to a `Processed Bucket`.
+4.  **Load**: A second Lambda loads the clean data into **Amazon RDS (PostgreSQL)**.
+
+## Impact
+
+The "Data Tender" transformed our workflow.
+
+- **Latency**: Reduced from ~2 weeks to ~15 minutes.
+- **QC**: Shoreside scientists can likely check data quality _while the ship is still at sea_, allowing for immediate corrections.
+- **Automation**: No more lost thumb drives or manual copy-paste errors.
+
+While we are considering a migration to a React/Typescript stack in the future to align with our web apps, the PySide6 implementation proved that a robust, offline-first desktop app is still a powerful tool for field operations.
