@@ -1,0 +1,99 @@
+---
+title: 'Connecting the Dots: Distributed Query Engines for Data Migration'
+date: '2026-02-01'
+tags:
+  - apache-drill
+  - trino
+  - big-data
+  - migration
+  - oracle
+  - mongodb
+draft: false
+summary: >-
+  How I used Apache Drill's 'schema-on-read' capabilities to verify an Oracle to MongoDB migration by joining data across both systems on the fly.
+authors:
+  - default
+---
+
+## The Migration Challenge
+
+Migrating a legacy **Oracle** database to **MongoDB** (or eventually **CouchDB** for offline-first capabilities) is never just a "copy and paste" job. The data models are fundamentally different. You're moving from rigid tables to flexible documents.
+
+During a recent project for NOAA, verifying that the data landed correctly was a massive headache. Running a `SELECT COUNT(*)` on Oracle and compared it to `db.collection.count()` in Mongo wasn't enough. We needed to verify the _data contents_, row by row (or document by document).
+
+## Enter Apache Drill
+
+I explored **Apache Drill** as a solution. Drill is a "schema-on-read" distributed query engine. This means it doesn't need you to define tables beforehand. You just point it at a data source, and it figures out the structure as it reads.
+
+The killer feature? **Cross-Source Joins**.
+
+I could write a single SQL query that joined my Oracle table directly with my MongoDB collection:
+
+```sql
+SELECT oracle_table.id, mongo_collection.u_id
+FROM oracle.users AS oracle_table
+JOIN mongo.users AS mongo_collection
+ON oracle_table.id = mongo_collection.u_id
+WHERE oracle_table.status != mongo_collection.status
+```
+
+This single ability saved us weeks of writing custom validation scripts.
+
+## Setting Up Apache Drill Locally
+
+If you want to try this out, here is how I got Drill running locally on Windows to query MongoDB.
+
+### 1. Installation
+
+First, grab the Drill distribution and Java JDK.
+
+1.  **Download Drill**: [apache-drill-1.21.1.tar.gz](https://www.apache.org/dyn/closer.cgi/drill/1.21.1/apache-drill-1.21.1.tar.gz)
+2.  **Unzip**: Extract the tarball to a folder on your machine (e.g., `C:\apache-drill-1.21.1`).
+3.  **Java**: Download the [JDK 20](https://download.oracle.com/java/20/latest/jdk-20_windows-x64_bin.zip) and unzip it.
+
+### 2. Configuration
+
+You need to tell Windows where to find these tools.
+
+- Add your Drill and Java `bin` folders to your user `Path` variable.
+- Set `JAVA_HOME` if necessary.
+
+### 3. Verification
+
+Launch your command prompt and type `drill-embedded`. You should see the Drill shell start up:
+
+![Drill CLI Start](/static/images/drill/step-1.png)
+
+### 4. Connecting Data Sources
+
+One Drill is running, you can access the powerful Web UI at `http://localhost:8047`. Navigate to the **Storage** tab.
+
+![Drill Web UI](/static/images/drill/step-2.png)
+
+Find the `mongo` plugin under "Disabled Storage Plugins", click **Enable**, and then **Update**.
+
+Paste in your connection string:
+
+![Mongo Config 1](/static/images/drill/step-3.png)
+
+![Mongo Config 2](/static/images/drill/step-4.png)
+
+### 5. Running Queries
+
+With the connection configured, you can now query MongoDB using standard SQL!
+
+Go back to your terminal (or the query tab in the UI) and run:
+
+```sql
+SHOW DATABASES;
+USE mongo;
+SELECT * FROM my_collection LIMIT 5;
+```
+
+![Query Results](/static/images/drill/step-5.png)
+
+## Beyond Drill: Trino and Superset
+
+While Drill was fantastic for ad-hoc exploration on my local machine, we also looked at **Trino** (formerly PrestoSQL) for larger scale deployments. Paired with **Apache Superset**, it provides a stunning BI layer over _all_ your data sources.
+
+The ability to treat your entire infrastructure—files, NoSQL, Relational DBs—as one giant SQL-queryable lake is a game changer for data engineering.

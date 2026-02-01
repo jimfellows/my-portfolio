@@ -1,0 +1,53 @@
+---
+title: 'Exploring PGlite for Offline-First Field Research Apps'
+date: '2026-01-31'
+tags:
+  - pglite
+  - local-first
+  - react
+  - electron
+  - postgresql
+  - offline
+draft: false
+summary: >-
+  Evaluating PGlite as a SQLite alternative for NOAA Fisheries research vessels: potential benefits for sync and UI vs. performance concerns.
+authors:
+  - default
+---
+
+## The Challenge: Data Collection at Sea
+
+When you're hundreds of miles offshore on a NOAA Fisheries Trawl Survey, "cloud-first" isn't an option. The internet is a luxury, not a utility. For years, our research vessels have relied on a battle-tested stack to collect critical biological and sensor data: **Python (PyQt5) and SQLite**.
+
+It works. It’s robust. But as we look to the future, we're asking: can we do better?
+
+## The Contender: PGlite + React + Electron
+
+I've been exploring **PGlite** as the core database for our next-generation field applications, paired with a modern UI stack: **React, Material UI, and Electron**.
+
+### Why Change?
+
+1.  **The UI Experience**: PyQt5 is functional, but building rich, responsive interfaces with it feels like fighting the last war. Moving to React and Material UI opens up a massive ecosystem of components, making it easier to build intuitive tools for scientists working long shifts in rough seas.
+2.  **The Sync Story**: This is the big one. Back on shore, everything lands in **PostgreSQL (RDS)**. Currently, we have to map SQLite data types and schemas to Postgres. With PGlite, we're running actual Postgres in the browser/process. The potential to simplify the "write-path sync"—even if it requires custom replication logic—is huge. Same dialect, same types, same logic.
+
+## The Questions (and Concerns)
+
+It's not all smooth sailing yet. Here’s what keeps me up at night regarding this switch:
+
+### 1. Where is PostGIS?
+
+For a net mensuration and GPS-heavy workflow, spatial data is first-class citizen. We need **PostGIS**. PGlite has announced support is coming, but for a production scientific application, "coming soon" is a risky dependency. We need to know if the WASM implementation can handle the geospatial queries we throw at it.
+
+### 2. Performance & The Single Thread
+
+SQLite is famous for being able to handle whatever you throw at it (within reason). PGlite, running in WASM, is currently single-threaded. When we're logging high-frequency sensor streams while simultaneously rendering a complex UI, will it choke?
+
+### 3. "Battle-Tested" vs. "Bleeding Edge"
+
+SQLite is deployed on billions of devices. PGlite is... new. For a scientific survey that costs thousands of dollars a day to operate, data loss is unacceptable.
+
+## Conclusion
+
+PGlite represents a fascinating shift. The idea of "Postgres everywhere"—from the RDS server on shore to the laptop in the ship's dry lab—is incredibly appealing. If the performance holds up and PostGIS arrives, this could be the modernize our fleet needs.
+
+I'll be building a prototype dashboard with PGlite and MUI next to test the limits. Stay tuned for the benchmarks.
