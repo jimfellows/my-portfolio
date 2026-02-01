@@ -22,6 +22,12 @@ const projectsData: Project[] = [
     imgSrc: '/static/images/time-machine.jpg',
     href: '/blog/the-time-machine',
   },
+  {
+    title: 'Rockfish Cutter Camera',
+    description: `An overhead camera system developed for NOAA Fisheries to automate biological sampling. Features a Raspberry Pi 4, PoE, FastAPI, and custom EXIF metadata tagging for high-resolution specimen imagery.`,
+    imgSrc: '/static/images/projects/rockfish/tablet-cam.jpg',
+    href: '/blog/rockfish-camera-system',
+  },
 ]
 
 export default projectsData
