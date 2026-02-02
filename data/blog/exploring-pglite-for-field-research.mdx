@@ -37,6 +37,9 @@ It's not all smooth sailing yet. Here’s what keeps me up at night regarding th
 ### 1. Where is PostGIS?
 
 For a net mensuration and GPS-heavy workflow, spatial data is first-class citizen. We need **PostGIS**. PGlite has announced support is coming, but for a production scientific application, "coming soon" is a risky dependency. We need to know if the WASM implementation can handle the geospatial queries we throw at it.
+In the mean time, in order to keep my RDS PostgreSQL compatible, I've separated my PostGIS data types into separate tables,
+and have converted them into geojson. This pattern adds a bit of maintenance overhead in the database, but allows
+me to use geospatial functionality easily in pglite while at the same time not losing PostGIS functionality server-side.
 
 ### 2. Performance & The Single Thread
 
@@ -46,8 +49,23 @@ SQLite is famous for being able to handle whatever you throw at it (within reaso
 
 SQLite is deployed on billions of devices. PGlite is... new. For a scientific survey that costs thousands of dollars a day to operate, data loss is unacceptable.
 
+## Update: The Prototype is Live
+
+I've begun building the prototype application, a port of our teams legacy Python/Kivy app **TowLogger**, to testing this stack in a real-world scenario. The goal is to replace our legacy app with a modern, map-centric interface.
+
+![TowLogger Waypoint Table](/static/images/pglite/tow-logger-waypoints.png)
+
+![TowLogger Map View](/static/images/pglite/tow-logger-map.png)
+
+### The Secret Weapon: Drizzle ORM
+
+To interact with PGlite, I'm using **Drizzle ORM**.
+
+If you haven't used Drizzle yet, it's a breath of fresh air compared to heavier ORMs like TypeORM or Prisma. It feels incredibly close to writing SQL, but with full TypeScript type safety.
+
+- **Migrations**: Drizzle's `kit` handles schema migrations effortlessly, which is critical when we're persisting data to a browser-based IndexedDB via PGlite.
+- **Dev Workflow**: Even though I haven't implemented the real-time sync with PGlite's native replication yet, the dev loop is fantastic. I can use `pg_dump` to snapshot our shoreside RDS Postgres database, and then use Drizzle's seeding tools to hydrate my local PGlite instance. This lets me develop against real production data without needing a stable internet connection.
+
 ## Conclusion
 
 PGlite represents a fascinating shift. The idea of "Postgres everywhere"—from the RDS server on shore to the laptop in the ship's dry lab—is incredibly appealing. If the performance holds up and PostGIS arrives, this could be the modernize our fleet needs.
-
-I'll be building a prototype dashboard with PGlite and MUI next to test the limits. Stay tuned for the benchmarks.
