@@ -66,6 +66,53 @@ If you haven't used Drizzle yet, it's a breath of fresh air compared to heavier 
 - **Migrations**: Drizzle's `kit` handles schema migrations effortlessly, which is critical when we're persisting data to a browser-based IndexedDB via PGlite.
 - **Dev Workflow**: Even though I haven't implemented the real-time sync with PGlite's native replication yet, the dev loop is fantastic. I can use `pg_dump` to snapshot our shoreside RDS Postgres database, and then use Drizzle's seeding tools to hydrate my local PGlite instance. This lets me develop against real production data without needing a stable internet connection.
 
+### Technical Deep Dive
+
+Here is how we are actually managing the "Postgres in the Browser" workflow.
+
+#### 1. Connecting via PSQL
+
+One of the coolest features of PGlite is that you can connect to it with standard tools while it runs in the browser (if you expose the port).
+
+```bash
+# Connect to the in-browser PGlite instance
+PGSSLMODE=disable psql -h localhost -p 9876 -U postgres
+```
+
+_Note: PGlite runs in single-user mode, so this might lock your application's connection._
+
+#### 2. Seeding the Database
+
+To hydrate the local database for development without a live internet connection, we use a custom bash script that leverages `pg_dump`.
+
+1.  **Extract**: Pulls connection info from our `.env` file and uses `pg_dump` to generate INSERT statements from the production RDS server.
+    ```bash
+    ./src/main/src/db/generate-db-seed.sh
+    ```
+2.  **Clean & Rebuild**: When the app detects a new seed SQL file, it drops existing schemas, rebuilds extensions and functions, runs Drizzle migrations, and then executing the seed SQL.
+
+This gives us a fresh, production-like environment every time we reset.
+
+#### 3. Managing Schema Changes with Drizzle
+
+We use `drizzle-kit` to keep our PGlite schema in sync with our codebase.
+
+**Initial Introspection**
+We originally pulled our schema from RDS:
+
+```bash
+npx drizzle-kit generate --config=./src/main/src/db/drizzle.rds.config.ts
+```
+
+**Generating Migrations**
+To update PGlite when we modify our Drizzle schema:
+
+```bash
+npx drizzle-kit generate --config ./src/main/src/db/drizzle.pglite.config.ts
+```
+
+This generates SQL files that the application automatically runs on boot. For complex logic (like materialized views) that Drizzle doesn't support natively, we leverage Drizzle's `--custom` migration generation to write raw SQL that is tracked alongside our ORM changes.
+
 ## Conclusion
 
 PGlite represents a fascinating shift. The idea of "Postgres everywhere"—from the RDS server on shore to the laptop in the ship's dry lab—is incredibly appealing. If the performance holds up and PostGIS arrives, this could be the modernize our fleet needs.
