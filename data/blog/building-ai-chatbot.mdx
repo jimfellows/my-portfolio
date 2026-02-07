@@ -1,0 +1,36 @@
+---
+title: 'Building My Own AI Chatbot: Inspired by about.me'
+date: '2026-02-07'
+tags: ['ai', 'postgresql', 'prisma', 'gemini', 'rag']
+draft: false
+summary: 'Rather than paying for a pro AI chatbot on about.me, I decided to build my own using pgvector, RAG, and the Gemini API.'
+authors: ['default']
+---
+
+I recently came across the service [about.me](https://about.me), an online platform that serves as a digital business card or personal landing page for professionals. It's a slick service with a basic free tier that looks great, but what really caught my eye was their paid "Pro" version, which includes a personalized AI chatbot trained on your details.
+
+I was tempted to sign up—maybe I still will just to see how it performs—but then the engineer in me took over. Why pay for a feature when I can build a custom version myself? This seemed like the perfect opportunity to dive into a few technologies I've been meaning to explore: **pgvector**, **RAG (Retrieval-Augmented Generation)**, and the **Gemini API**.
+
+## The Plan
+
+My goal is to create a chatbot that can answer questions about my professional experience, skills, and projects by querying a vector database of my resume and portfolio content.
+
+Here is the high-level architecture I'm envisioning:
+
+1.  **Vectorize Data**: Take my resume, project descriptions, and other personal info and convert them into vector embeddings.
+2.  **Storage**: Load these embeddings into a **PostgreSQL** database with the **pgvector** extension enabled. This allows for efficient vector similarity search.
+3.  **Backend Logic**: Use **Prisma ORM** to handle database interactions. When a user asks the chatbot a question, the backend will:
+    - Convert the user's query into a vector embedding.
+    - Query **pgvector** to find the most relevant chunks of text from my stored data (Similarity Search).
+    - Construct a prompt that includes the user's question along with the retrieved context.
+4.  **Generation**: Send this prompt to the **Gemini API**, which will generate a natural language response based on the provided context.
+
+## Why pgvector?
+
+I've been looking for an excuse to start using `pgvector`. It brings vector similarity search directly into Postgres, meaning I can keep my relational data (like blog posts or project metadata) and my vector embeddings in the same place. No need for a separate vector database like Pinecone or Weaviate for a project of this scale.
+
+## Next Steps
+
+I'm currently in the early stages of building this out. I need to set up the Postgres schema, configure the Prisma client to handle vector types (which might require some raw SQL or specific extensions), and start experimenting with embedding models.
+
+Stay tuned! I'll be documenting the process as I get things rolling.
