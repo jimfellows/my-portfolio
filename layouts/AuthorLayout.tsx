@@ -38,6 +38,18 @@ export default function AuthorLayout({ children, content }: Props) {
               <SocialIcon kind="github" href={github} />
               <SocialIcon kind="linkedin" href={linkedin} />
             </div>
+            {content.resume && (
+              <div className="pt-4">
+                <a
+                  href={content.resume}
+                  className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 font-bold"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View Resume
+                </a>
+              </div>
+            )}
           </div>
           <div className="prose dark:prose-invert max-w-none pt-8 pb-8 xl:col-span-2">
             {children}
