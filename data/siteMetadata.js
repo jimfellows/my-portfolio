@@ -3,7 +3,8 @@ const siteMetadata = {
   title: 'Jim Fellows | Software & Data Engineer',
   author: 'Jim Fellows',
   headerTitle: 'Jim Fellows',
-  description: 'Specializing in high-stakes maritime and environmental data systems.',
+  description:
+    'Experienced Engineer and Project Manager building resilient, full-stack data systems.',
   language: 'en-us',
   theme: 'system', // system, dark or light
   siteUrl: 'https://jimfellows.dev',
