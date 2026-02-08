@@ -11,6 +11,7 @@ import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
+import ChatWidget from '@/components/ChatWidget'
 
 const space_grotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -103,6 +104,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <main className="mb-auto">{children}</main>
             </SearchProvider>
             <Footer />
+            <ChatWidget />
           </SectionContainer>
         </ThemeProviders>
       </body>
