@@ -17,16 +17,16 @@ const ChatWidget = () => {
           {/* Header */}
           <div className="bg-primary-500 flex items-center justify-between p-4 text-white">
             <div className="flex items-center space-x-2">
-              <div className="relative h-8 w-8 overflow-hidden rounded-full border-2 border-white">
+              <div className="relative h-12 w-12 overflow-hidden rounded-full border-2 border-white">
                 <Image
-                  src="/static/images/linkedin.jpg"
-                  alt="AI Avatar"
-                  width={32}
-                  height={32}
+                  src="/static/winston_glasses_down.png"
+                  alt="Winston Avatar"
+                  width={48}
+                  height={48}
                   className="object-cover"
                 />
               </div>
-              <h3 className="text-sm font-bold">Chat with My AI Clone</h3>
+              <h3 className="text-sm font-bold">Chat with Winston</h3>
             </div>
             <button
               onClick={toggleChat}
@@ -50,17 +50,20 @@ const ChatWidget = () => {
           {/* Messages Area */}
           <div className="h-64 space-y-4 overflow-y-auto bg-gray-50 p-4 dark:bg-gray-900">
             <div className="flex items-start space-x-2">
-              <div className="relative h-8 w-8 flex-shrink-0 overflow-hidden rounded-full">
+              <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-full">
                 <Image
-                  src="/static/images/linkedin.jpg"
-                  alt="AI Avatar"
-                  width={32}
-                  height={32}
+                  src="/static/winston_glasses_down.png"
+                  alt="Winston Avatar"
+                  width={40}
+                  height={40}
                   className="object-cover"
                 />
               </div>
               <div className="rounded-tr-xl rounded-br-xl rounded-bl-xl border border-gray-100 bg-white p-3 text-sm shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200">
-                <p>Hi, I'm Jim. How can I help you?</p>
+                <p>
+                  Hi, I'm an avatar of Jim's cat, trained to answer questions about his professional
+                  work. Ask me about Jim, or how I was built!
+                </p>
               </div>
             </div>
           </div>
@@ -88,7 +91,10 @@ const ChatWidget = () => {
                 </svg>
               </button>
             </div>
-            <p className="mt-2 text-center text-xs text-gray-400">AI can make mistakes.</p>
+            <div className="mt-2 text-center text-xs text-gray-400">
+              <p>AI can make mistakes.</p>
+              <p className="text-primary-500 font-semibold">Built with Gemini + pgvector</p>
+            </div>
           </div>
         </div>
       )}
