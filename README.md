@@ -342,3 +342,74 @@ Using the template? Support this effort by giving a star on GitHub, sharing your
 ## Licence
 
 [MIT](https://github.com/timlrx/tailwind-nextjs-starter-blog/blob/main/LICENSE) © [Timothy Lin](https://www.timlrx.com)
+
+## AI Chatbot Setup (RAG with pgvector + Gemini)
+
+This project includes a RAG (Retrieval-Augmented Generation) chatbot powered by Google Gemini and PostgreSQL with `pgvector`.
+
+### 1. Database Setup
+You need a PostgreSQL database with the `vector` extension enabled.
+
+**Manual Setup (Run these in `psql`):**
+```sql
+-- Create Database
+CREATE DATABASE my_portfolio_db;
+
+-- Create App User
+CREATE USER my_portfolio_app_user WITH LOGIN;
+
+-- Create Schema
+CREATE SCHEMA my_portfolio;
+
+-- Permissions
+GRANT USAGE ON SCHEMA my_portfolio TO my_portfolio_app_user;
+ALTER SCHEMA my_portfolio OWNER TO my_portfolio_app_user;
+GRANT CONNECT ON DATABASE my_portfolio_db TO my_portfolio_app_user;
+
+-- Enable Extension (Requires Superuser)
+CREATE EXTENSION IF NOT EXISTS vector;
+```
+
+**Developer Note: Windows Installation of pgvector**
+If you are running PostgreSQL on Windows, you may need to compile `pgvector` from source. Steps:
+1.  Install PostgreSQL 18 locally.
+2.  Launch **x64 Native Tools Command Prompt for VS 2019** (or newer) as Administrator.
+3.  Run the following commands:
+    ```cmd
+    set "PGROOT=C:\Program Files\PostgreSQL\18"
+    cd %TEMP%
+    git clone --branch v0.8.1 https://github.com/pgvector/pgvector.git
+    cd pgvector
+    nmake /F Makefile.win
+    nmake /F Makefile.win install
+    ```
+4.  Log into Postgres (`psql`) and run:
+    ```sql
+    CREATE EXTENSION vector;
+    ```
+
+*Note: Make sure to set a password for `my_portfolio_app_user`.*
+
+### 2. Environment Variables
+Create a `.env.local` file in the root directory:
+```env
+# Database Connection (Ensure schema is specified)
+POSTGRES_URL=postgresql://my_portfolio_app_user:YOUR_PASSWORD@localhost:5432/my_portfolio_db?schema=my_portfolio
+
+# Google Gemini API Key
+GOOGLE_GENERATIVE_AI_API_KEY=your_gemini_api_key
+```
+
+### 3. Initialize & Seed Data
+Run the following scripts to set up the table and generate embeddings for your content (blog posts, projects, authors, and resume).
+
+**Setup Table:**
+```bash
+npx tsx scripts/setup-db.ts
+```
+
+**Seed Embeddings:**
+```bash
+npx tsx scripts/seed-embeddings.ts
+```
+*Run the seed script whenever you add new content or update your resume (`public/static/resume.pdf`).*
