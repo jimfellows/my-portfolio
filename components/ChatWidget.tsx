@@ -8,27 +8,20 @@ const ChatWidget = () => {
   const [localInput, setLocalInput] = useState('')
   const { messages, sendMessage, status, error, setMessages } = useChat({
     onError: (err) => {
-      console.error('useChat onError:', err);
-      // Force rate limit handling here if needed
       const errString = err.message || JSON.stringify(err);
       if (errString.includes('429') || errString.includes('Rate limit')) {
-        // Logic will be handled by useEffect but logging here confirms detection
-        console.log('Rate limit detected in onError');
+        // Handled silently for UX
       }
     },
     onFinish: (context) => {
-        console.log('onFinish Context:', context);
-        
         // The SDK might return { message: ... } or just the message depending on version/stream type
         const msg = (context as any).message || context;
-        console.log('Processed Message:', msg);
 
         // Check for content string OR text parts
         const hasContent = msg.content && msg.content.length > 0;
         const hasTextParts = msg.parts && Array.isArray(msg.parts) && msg.parts.some((p: any) => p.type === 'text' && p.text && p.text.length > 0);
 
         if (!hasContent && !hasTextParts) {
-            console.log('Stream finished with empty content/parts');
              setMessages(prev => {
                 const lastMsg = prev[prev.length - 1] as any;
                 if (lastMsg && lastMsg.content && lastMsg.content.includes('*Hiss!*')) return prev;
@@ -59,9 +52,6 @@ const ChatWidget = () => {
   // Handle Rate Limit / Quota Errors
   useEffect(() => {
     if (error) {
-        console.log('ChatWidget Error Effect:', error);
-        console.log('Error Message:', error.message);
-        console.log('Error Name:', error.name);
         // Combine all possible error sources for checking
         const errorString = (error.message || '') + JSON.stringify(error);
         if (errorString.includes('429') || errorString.includes('Rate limit') || errorString.includes('Resource Exhausted')) {

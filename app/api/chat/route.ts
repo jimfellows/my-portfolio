@@ -20,19 +20,16 @@ function cleanMessages(messages: any[]): any[] {
 
 export async function POST(req: Request) {
   try {
-    console.log('Received chat request');
     const { messages } = await req.json();
     const lastMessage = messages[messages.length - 1];
 
     if (!lastMessage || typeof lastMessage.content !== 'string') {
-       console.log('Invalid message format:', lastMessage);
        return new Response(JSON.stringify({ error: 'Invalid message format' }), {
          status: 400,
          headers: { 'Content-Type': 'application/json' },
        });
     }
 
-    console.log('Generating embedding for:', lastMessage.content.substring(0, 50) + '...');
     // 1. Generate embedding for the user's question
     const { embedding } = await embed({
       model: google.textEmbeddingModel('gemini-embedding-001'),
@@ -61,7 +58,6 @@ export async function POST(req: Request) {
       );
 
       context = rows.map(row => row.content).join('\n\n');
-      console.log('Context retrieved, length:', context.length);
     } catch (error) {
       console.error('Error querying database:', error);
       // Continue without context if DB fails
@@ -83,7 +79,6 @@ export async function POST(req: Request) {
   `;
 
     // 4. Stream the response
-    console.log('Starting streamText with model: gemini-2.5-flash-lite');
     const cleanedMessages = cleanMessages(messages);
     
     const result = streamText({
@@ -91,34 +86,12 @@ export async function POST(req: Request) {
       system: systemPrompt,
       messages: cleanedMessages,
       maxRetries: 0,
-      onChunk: ({ chunk }) => {
-          if (chunk.type === 'text-delta') {
-            console.log(`Chunk received: ${chunk.text.length} chars`);
-          }
-      },
     });
 
-    console.log('Stream created. Using toUIMessageStreamResponse.');
     // @ts-ignore - method exists at runtime but missing in types
     return result.toUIMessageStreamResponse();
   } catch (error: any) {
     console.error('API Error:', error);
-    // LOGGING: Write error to file for debugging
-    try {
-        const fs = require('fs');
-        const path = require('path');
-        const logPath = path.join(process.cwd(), 'debug_server_error.json');
-        const errorLog = {
-            timestamp: new Date().toISOString(),
-            message: error.message,
-            stack: error.stack,
-            fullError: JSON.parse(JSON.stringify(error, Object.getOwnPropertyNames(error)))
-        };
-        fs.writeFileSync(logPath, JSON.stringify(errorLog, null, 2));
-        console.error('Error written to:', logPath);
-    } catch (e) { 
-        console.error('Failed to write error log', e); 
-    }
 
     const errorString = JSON.stringify(error, Object.getOwnPropertyNames(error));
     const isRateLimit = error.message?.includes('429') || 
