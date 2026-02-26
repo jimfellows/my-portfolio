@@ -1,5 +1,5 @@
 ---
-title: 'Building My Own AI Chatbot: Inspired by about.me'
+title: 'My AI Chatbot: Gemini API and pgvector'
 date: '2026-02-07'
 tags: ['ai', 'postgresql', 'prisma', 'gemini', 'rag']
 draft: false
@@ -27,10 +27,17 @@ Here is the high-level architecture I'm envisioning:
 
 ## Why pgvector?
 
-I've been looking for an excuse to start using `pgvector`. It brings vector similarity search directly into Postgres, meaning I can keep my relational data (like blog posts or project metadata) and my vector embeddings in the same place. No need for a separate vector database like Pinecone or Weaviate for a project of this scale.
+I've been looking for an excuse to start using `pgvector`. It brings vector similarity search directly into Postgres, meaning I can keep my relational data (like blog posts or project metadata) and my vector embeddings in the same place. No need for a separate vector database like Pinecone or Weaviate for a project of this scale. What's been most impressive is how well this seems to work with
+something like RAG and the Gemini API, and how easy it was to setup.
+
+## Winston is Live!
+
+Sitting in bed one night trying to create a few new avatars for my chatbot, when Winston my cat jumped up on the bed.  
+I snapped a picture, uploaded, and created the persona for my chatbot. Go to the chat icon in the bottom
+right corner of this app and give him a try, and let me know what you think!
 
 ## Next Steps
 
-I'm currently in the early stages of building this out. I need to set up the Postgres schema, configure the Prisma client to handle vector types (which might require some raw SQL or specific extensions), and start experimenting with embedding models.
-
-Stay tuned! I'll be documenting the process as I get things rolling.
+This project was really fun and brought a new dimension to my site. I'm currently exploring how I can
+implement something similar with a data access website I'm helping out with in my 9-5 job. It's a PostgreSQL-based
+data warehouse, and we use GCP and Gemini, so it's a perfect fit. I'll keep you posted on how that goes!

@@ -1,5 +1,5 @@
 ---
-title: 'Automating Biological Sampling: The Rockfish Cutter Camera'
+title: 'Automating Biological Sampling: The Cutter Camera'
 date: '2025-09-02'
 tags:
   - python
@@ -15,11 +15,18 @@ authors:
   - default
 ---
 
-## The Mission: Better Data for Rockfish
+## The Mission: Automated Image Capture of Fish Specimens
 
-The [NOAA Southern California Hook & Line Survey](https://www.fisheries.noaa.gov/west-coast/science-data/southern-california-shelf-rockfish-hook-and-line-survey) is a critical research effort to monitor rockfish populations. Every year, we catch, measure, and release thousands of fish. Accurate identification and documentation are paramount.
+The [NOAA Southern California Hook & Line Survey](https://www.fisheries.noaa.gov/west-coast/science-data/southern-california-shelf-rockfish-hook-and-line-survey) plays a critical role
+in fisheries stock assessment along the West Coast. Every year, the survey samples approximately 210 fixed site locations
+and catches on average 15,000 individual fish that are sampled for biological measurements.
 
-I led the development of a camera system designed to integrate directly with our biological sampling workflow, providing a high-resolution "digital voucher" for every specimen measuring across the cutter station table.
+The team uses a pretty slick software setup that automates much of the data collection via multiple apps
+that communicate over a local network spun up on the research vessel. With a pretty efficient workflow already,
+we were faced with a question, what might take us to the next level?
+
+I led the development of a camera system designed to integrate directly with our biological sampling workflow, providing a high-resolution "digital voucher"
+for every specimen measuring across the cutter station table. Part of the story here is about incremental progress, and pushing for improvements each survey.
 
 ## The Evolution of a System
 
@@ -49,22 +56,34 @@ We learned our lesson. For the second iteration, we decoupled the camera from th
 
 ![Tablet UI Integration](/static/images/projects/rockfish/tablet-ui.jpg)
 
-The result? Over **10,000 high-resolution images** of individual rockfish specimens, perfectly linked to their biological data.
+The result? Over **10,000 high-resolution images** of individual rockfish specimens, linked to their biological data.
 
 ![JSON Metadata Example](/static/images/projects/rockfish/json-data.png)
 
 ### Year 3: Remote Operations
 
-We expanded the system to allow control not just from the sampling station, but remotely from the galley. We built a Python module that lets us monitor the "backdeck" camera feeds over the ship's network, ensuring QC without needing to be physically present on the wet deck.
+We expanded the system to allow control not just from the sampling station, but remotely from the galley.
+We built a Python module that lets us monitor the "backdeck" camera feeds over the vessel's network,
+ensuring QC without needing to be physically present on the backdeck.
 
 ## The Future: AI on the Edge
 
-We are now looking beyond just "taking pictures." The next frontier is **automated measurement**.
+We are now looking beyond just "taking pictures." The next frontier is **automated capture & measurement**. As of this writing
+(early 2026), we're in the planning phases of this year's survey in September. My hope is we can
+use past year's data to train a model to 1.) identify a fish and track it as a single entity 2.) automate the
+actual capture of the fish after detection 3.) attempt to infer an average length measurement of the indivual, and
+regress an estimated from this length.
 
-We are experimenting with the **OAK-D POE Pro**, a smart stereo camera. The goal is to perform live object segmentation and depth mapping on the edge. If we can accurately segment the fish and determine its distance from the lens, we can calculate its length automatically.
+Performing real-time image processing like this will likely require a more powerful "brain" device controlling
+the camera and offloading the frame-by-frame processing from the camera.
+I'm thinking a single board computer (Raspberry PI + AI hat or jetson nano) might do the trick.
+
+We are also experimenting with the **OAK-D POE Pro**, a smart stereo camera. The goal is to perform
+live object segmentation and depth mapping on the edge. If we can accurately segment the fish and
+determine its distance from the lens, we can calculate its length automatically.
 
 ![AI Detection Prototype](/static/images/projects/rockfish/ai-detect.png)
 
-We're also investigating Time-of-Flight (ToF) cameras to handle the harsh, variable lighting conditions on the open ocean.
+Also looking into Time-of-Flight (ToF) cameras to handle the harsh, variable lighting conditions on the open ocean.
 
 What started as a QC project has laid the groundwork for a fully automated sampling capability, potentially revolutionizing how we collect data on research and commercial vessels alike.
