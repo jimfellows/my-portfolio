@@ -1,5 +1,5 @@
 ---
-title: 'Automating Biological Sampling: The Cutter Camera'
+title: 'Edge AI in the Field: Automating Biological Sampling Systems'
 date: '2025-09-02'
 tags:
   - python
@@ -10,7 +10,7 @@ tags:
   - fastapi
 draft: false
 summary: >-
-  Evolution of a biological sampling camera system for the NOAA Southern California Hook & Line Survey: From USB webcam to networked AI-ready edge device.
+  Evolution of a marine computer vision system for NOAA: Transitioning from standard webcams to a networked, AI-ready edge device utilizing Raspberry Pi and FastAPI.
 authors:
   - default
 ---
@@ -74,16 +74,12 @@ use past year's data to train a model to 1.) identify a fish and track it as a s
 actual capture of the fish after detection 3.) attempt to infer an average length measurement of the indivual, and
 regress an estimated from this length.
 
-Performing real-time image processing like this will likely require a more powerful "brain" device controlling
-the camera and offloading the frame-by-frame processing from the camera.
-I'm thinking a single board computer (Raspberry PI + AI hat or jetson nano) might do the trick.
+Performing real-time image processing at this scale requires a significantly more powerful "brain" to control the camera and offload frame-by-frame processing. For our 2026 deployment, we are upgrading our edge compute infrastructure to an **NVIDIA Jetson Orin NX** to handle the intensive machine learning workloads.
 
-We are also experimenting with the **OAK-D POE Pro**, a smart stereo camera. The goal is to perform
-live object segmentation and depth mapping on the edge. If we can accurately segment the fish and
-determine its distance from the lens, we can calculate its length automatically.
+We are also transitioning our imaging hardware to improve accuracy under demanding conditions. To eliminate motion artifacts and handle the harsh, variable lighting of the open ocean, we are evaluating the **Lucid Vision Labs Triton** camera, specifically leveraging its global shutter capabilities for crisp, distortion-free captures.
 
 ![AI Detection Prototype](/static/images/projects/rockfish/ai-detect.png)
 
-Also looking into Time-of-Flight (ToF) cameras to handle the harsh, variable lighting conditions on the open ocean.
+On the software front, we are actively investigating the new [open-source Edge AI models recently launched by The Nature Conservancy](https://www.nature.org/en-us/newsroom/tnc-launches-edge-ai-reports/) for Electronic Monitoring (EM). Integrating these models into our edge pipeline could drastically accelerate our timeline for automated catch verification, allowing us to leverage community-driven, battle-tested computer vision models directly on our vessel hardware.
 
 What started as a QC project has laid the groundwork for a fully automated sampling capability, potentially revolutionizing how we collect data on research and commercial vessels alike.

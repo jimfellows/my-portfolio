@@ -1,7 +1,7 @@
 import siteMetadata from '@/data/siteMetadata'
 import headerNavLinks from '@/data/headerNavLinks'
 import Image from 'next/image'
-import monogramImg from '@/data/hex_logo.png'
+
 import Link from './Link'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
@@ -21,10 +21,10 @@ const Header = () => {
             {' '}
             {/* Adjust h-12 w-12 to fit your header size preference */}
             <Image
-              src={monogramImg}
+              src="/static/data_wave.png"
               alt="Jim Fellows Logo"
               fill // This makes the image fill the parent div defined above
-              className="object-contain" // Ensures the logo doesn't get stretched
+              className="object-contain dark:invert" // Ensures the logo doesn't get stretched
               priority // Loads the logo immediately for better LCP score
             />
           </div>

@@ -282,19 +282,8 @@ const ChatWidget = () => {
           onClick={toggleChat}
           className="bg-primary-500 hover:bg-primary-600 flex h-14 w-14 items-center justify-center rounded-full text-white shadow-lg transition-transform hover:scale-110 focus:outline-none"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-7 w-7"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-            />
+          <svg viewBox="0 0 24 24" fill="currentColor" className="w-8 h-8">
+            <path d="M12.0003 21.0858C11.666 16.4808 8.01918 12.834 3.41422 12.5C8.01918 12.166 11.666 8.51918 12.0003 3.91422C12.3344 8.51918 15.9813 12.166 20.5862 12.5C15.9813 12.834 12.3344 16.4808 12.0003 21.0858Z" />
           </svg>
         </button>
       )}

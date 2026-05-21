@@ -6,10 +6,10 @@ const siteMetadata = {
   description:
     'Experienced Engineer and Project Manager building resilient, full-stack data systems.',
   language: 'en-us',
-  theme: 'system', // system, dark or light
+  theme: 'dark', // system, dark or light
   siteUrl: 'https://jimfellows.dev',
   siteRepo: 'https://github.com/jimfellows/my-portfolio',
-  siteLogo: `${process.env.BASE_PATH || ''}/static/images/hex_logo.png`,
+  siteLogo: `${process.env.BASE_PATH || ''}/static/data_wave.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
   mastodon: 'https://mastodon.social/@mastodonuser',
   email: 'hi@jimfellows.dev',
